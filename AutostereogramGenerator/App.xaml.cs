@@ -1,14 +1,33 @@
-﻿using System.Configuration;
-using System.Data;
+﻿using Microsoft.Extensions.DependencyInjection;
 using System.Windows;
 
-namespace AutostereogramGenerator
+namespace AutostereogramGenerator;
+
+/// <summary>
+/// Interaction logic for App.xaml
+/// </summary>
+public partial class App : Application
 {
     /// <summary>
-    /// Interaction logic for App.xaml
+    /// Initializes a new instance of the <see cref="App"/> class
     /// </summary>
-    public partial class App : Application
+    public App()
     {
+        var services = new ServiceCollection();
+        ConfigureServices(services);
+        ServiceProvider = services.BuildServiceProvider();
     }
 
+    private IServiceProvider ServiceProvider { get; }
+
+    private void ApplicationStartup(object sender, StartupEventArgs e)
+    {
+        ServiceProvider.GetRequiredService<MainWindow>().Show();
+    }
+
+    private static void ConfigureServices(IServiceCollection services)
+    {
+        services.AddTransient<MainWindow>();
+        services.AddTransient<IMainViewModel, MainViewModel>();
+    }
 }
