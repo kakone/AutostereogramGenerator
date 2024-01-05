@@ -3,11 +3,18 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.8.34322.80
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutostereogramGenerator", "AutostereogramGenerator\AutostereogramGenerator.csproj", "{C12DA9C3-A95B-4171-BCAD-EB946435C006}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AutostereogramGenerator", "AutostereogramGenerator\AutostereogramGenerator.csproj", "{C12DA9C3-A95B-4171-BCAD-EB946435C006}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Autostereogram", "Autostereogram\Autostereogram.csproj", "{F95F6CF3-A659-4455-8C6C-14DEEB99EAB5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Autostereogram", "Autostereogram\Autostereogram.csproj", "{F95F6CF3-A659-4455-8C6C-14DEEB99EAB5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Autostereogram.Tests", "Autostereogram.Tests\Autostereogram.Tests.csproj", "{56DB998B-7613-464F-B4DC-4BEED9193EBA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Autostereogram.Tests", "Autostereogram.Tests\Autostereogram.Tests.csproj", "{56DB998B-7613-464F-B4DC-4BEED9193EBA}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution items", "Solution items", "{DA51393F-FADC-4FC9-89BB-8E59C43B394E}"
+	ProjectSection(SolutionItems) = preProject
+		.gitignore = .gitignore
+		LICENSE.txt = LICENSE.txt
+		README.md = README.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

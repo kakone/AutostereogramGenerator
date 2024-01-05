@@ -13,12 +13,13 @@ namespace Autostereogram;
 /// <param name="height">result height</param>
 /// <param name="dpi">dots per inch number of the display device</param>
 /// <param name="observatorDistance">observator distance in inchs</param>
-public class AutoStereogramGenerator(Image<Rgb24> depthMap, Image<Rgb24>? pattern = null, int width = 0, int height = 0, int dpi = 96, int observatorDistance = 24)
+public class AutoStereogramGenerator(Image<Rgb24>? depthMap = null, Image<Rgb24>? pattern = null, int width = 0, int height = 0, int dpi = 96,
+    int observatorDistance = 24)
 {
     /// <summary>
     /// Gets or sets the depth map
     /// </summary>
-    public Image<Rgb24> DepthMap { get; set; } = depthMap;
+    public Image<Rgb24>? DepthMap { get; set; } = depthMap;
 
     /// <summary>
     /// Gets or sets the pattern
@@ -51,6 +52,11 @@ public class AutoStereogramGenerator(Image<Rgb24> depthMap, Image<Rgb24>? patter
     /// <returns>autostereogram image</returns>
     public Image<Rgb24> Create()
     {
+        if (DepthMap == null)
+        {
+            throw new ArgumentException(nameof(DepthMap));
+        }
+
         var eyeSep = Dpi * 2.5;
         var eyeSepMid = eyeSep / 2;
         var obsDist = Dpi * ObservatorDistance;
