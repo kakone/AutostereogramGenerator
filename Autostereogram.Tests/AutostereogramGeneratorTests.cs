@@ -28,7 +28,7 @@ public class AutostereogramGeneratorTests
     [Fact]
     public void CreateAutostereogram()
     {
-        CreateImage(SHARK, ROCKS, "Autostereogram.png", 1600, 900);
+        CreateImage(SHARK, ROCKS, "Autostereogram.png", 1920, 1080);
     }
 
     [Fact]

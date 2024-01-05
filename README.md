@@ -14,3 +14,5 @@ autostereogram.SaveAsPng(saveFileName);
 You can also download and have fun with the [AutostereogramGenerator application](https://github.com/kakone/AutostereogramGenerator/releases) :
 
 ![Autostereogram application](AutostereogramGenerator.png)
+
+The patterns come from the excellent [ambientCG.com](https://ambientcg.com/) website.
