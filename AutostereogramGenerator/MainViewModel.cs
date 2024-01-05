@@ -11,13 +11,21 @@ using System.Windows.Media.Imaging;
 
 namespace AutostereogramGenerator;
 
+/// <summary>
+/// Main view model
+/// </summary>
 public partial class MainViewModel : ObservableObject, IMainViewModel
 {
+    /// <summary>
+    /// Initializes a new instance of the <see cref="MainViewModel"/> class
+    /// </summary>
     public MainViewModel()
     {
         SizeChangedTimer = new Timer(RefreshAutostereogramAsync);
         DepthMaps = GetFiles(nameof(DepthMaps), Settings.Default.DepthMapsPath);
+        DepthMap = DepthMaps.FirstOrDefault();
         Patterns = GetFiles(nameof(Patterns), Settings.Default.PatternsPath);
+        Pattern = Patterns.FirstOrDefault();
     }
 
     private Timer SizeChangedTimer { get; }
@@ -28,27 +36,45 @@ public partial class MainViewModel : ObservableObject, IMainViewModel
 
     private int Height { get; set; }
 
+    /// <summary>
+    /// Gets the pattern files
+    /// </summary>
     public IEnumerable<File> Patterns { get; }
 
+    /// <summary>
+    /// Gets the depth map files
+    /// </summary>
     public IEnumerable<File> DepthMaps { get; }
 
+    /// <summary>
+    /// Gets the application title
+    /// </summary>
     public static string? ApplicationTitle => Assembly.GetExecutingAssembly().GetCustomAttribute<AssemblyTitleAttribute>()?.Title;
 
+    /// <summary>
+    /// Depth map
+    /// </summary>
     [ObservableProperty]
-    private string? _depthMap;
+    private File? _depthMap;
 
+    /// <summary>
+    /// Pattern
+    /// </summary>
     [ObservableProperty]
-    private string? _pattern;
+    private File? _pattern;
 
+    /// <summary>
+    /// Created autostereogram
+    /// </summary>
     [ObservableProperty]
     private ImageSource? _autostereogram;
 
-    partial void OnDepthMapChanged(string? value)
+    partial void OnDepthMapChanged(File? value)
     {
         RefreshAutostereogramAsync();
     }
 
-    partial void OnPatternChanged(string? value)
+    partial void OnPatternChanged(File? value)
     {
         RefreshAutostereogramAsync();
     }
@@ -69,8 +95,9 @@ public partial class MainViewModel : ObservableObject, IMainViewModel
     {
         return
         [
-            .. new[] { string.Empty }.Concat(GetFiles(applicationPath)).Concat(GetFiles(userPath))
-                .Select(path => new File(path)).OrderBy(f => f.Name)
+            .. (new File?[] { null }).Concat(
+                GetFiles(applicationPath).Concat(GetFiles(userPath))
+                    .Select(path => new File(Path.GetFullPath(path))).OrderBy(f => f.Name))
         ];
     }
 
@@ -105,14 +132,14 @@ public partial class MainViewModel : ObservableObject, IMainViewModel
         SizeChangedTimer.Change(Timeout.InfiniteTimeSpan, Timeout.InfiniteTimeSpan);
 
         var depthMap = DepthMap;
-        if (string.IsNullOrEmpty(depthMap))
+        if (string.IsNullOrEmpty(depthMap?.Path))
         {
             await Application.Current.Dispatcher.InvokeAsync(() => Autostereogram = null);
             return;
         }
-        using var depthMapImage = await LoadImageAsync(depthMap);
+        using var depthMapImage = await LoadImageAsync(depthMap.Path);
         var pattern = Pattern;
-        var patternImage = string.IsNullOrEmpty(pattern) ? null : await LoadImageAsync(pattern);
+        var patternImage = string.IsNullOrEmpty(pattern?.Path) ? null : await LoadImageAsync(pattern.Path);
         try
         {
             using var autostereogram = new AutoStereogramGenerator(depthMapImage, patternImage, Width, Height, Dpi).Create();
@@ -124,6 +151,10 @@ public partial class MainViewModel : ObservableObject, IMainViewModel
         }
     }
 
+    /// <summary>
+    /// Called when the image parent grid is initialized and rendered
+    /// </summary>
+    /// <param name="e">event args</param>
     [RelayCommand]
     public void Loaded(RoutedEventArgs e)
     {
@@ -133,6 +164,10 @@ public partial class MainViewModel : ObservableObject, IMainViewModel
         Height = (int)frameworkElement.ActualHeight;
     }
 
+    /// <summary>
+    /// Called when the image parent grid size has changed
+    /// </summary>
+    /// <param name="e">event args</param>
     [RelayCommand]
     public void SizeChanged(SizeChangedEventArgs e)
     {

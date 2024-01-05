@@ -1,17 +1,20 @@
 ﻿using System.Windows;
 
-namespace AutostereogramGenerator
+namespace AutostereogramGenerator;
+
+/// <summary>
+/// Interaction logic for MainWindow.xaml
+/// </summary>
+public partial class MainWindow : Window
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Initializes a new instance of the <see cref="MainWindow"/> class
     /// </summary>
-    public partial class MainWindow : Window
+    /// <param name="mainViewModel">main view model</param>
+    public MainWindow(IMainViewModel mainViewModel)
     {
-        public MainWindow(IMainViewModel mainViewModel)
-        {
-            InitializeComponent();
+        InitializeComponent();
 
-            DataContext = mainViewModel;
-        }
+        DataContext = mainViewModel;
     }
 }

@@ -13,7 +13,7 @@ namespace Autostereogram;
 /// <param name="height">result height</param>
 /// <param name="dpi">dots per inch number of the display device</param>
 /// <param name="observatorDistance">observator distance in inchs</param>
-public class AutoStereogramGenerator(Image<Rgb24> depthMap, Image<Rgb24>? pattern = null, int width = 0, int height = 0, int dpi = 72, int observatorDistance = 24)
+public class AutoStereogramGenerator(Image<Rgb24> depthMap, Image<Rgb24>? pattern = null, int width = 0, int height = 0, int dpi = 96, int observatorDistance = 24)
 {
     /// <summary>
     /// Gets or sets the depth map
@@ -117,6 +117,7 @@ public class AutoStereogramGenerator(Image<Rgb24> depthMap, Image<Rgb24>? patter
                     continue;
                 }
 
+                // hidden surface removal
                 leftPoint = linkedLeftPoints[right];
                 if (leftPoint != -1) // right point is already linked
                 {
@@ -126,7 +127,6 @@ public class AutoStereogramGenerator(Image<Rgb24> depthMap, Image<Rgb24>? patter
                     }
                     linkedRightPoints[leftPoint] = -1; // break old link
                 }
-
                 rightPoint = linkedRightPoints[left];
                 if (rightPoint != -1) // left point is already linked
                 {

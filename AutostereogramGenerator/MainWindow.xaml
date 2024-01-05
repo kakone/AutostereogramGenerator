@@ -16,21 +16,52 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <Grid Margin="4">
+            <Grid.Resources>
+                <Style TargetType="{x:Type ComboBoxItem}" x:Key="ComboBoxItemContainerStyle">
+                    <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                </Style>
+                <local:ComboBoxItemTemplateSelector x:Key="ComboBoxItemTemplateSelector">
+                    <local:ComboBoxItemTemplateSelector.ItemTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <Image
+                                    Source="{Binding Path, IsAsync=True}"
+                                    HorizontalAlignment="Left"
+                                    MaxWidth="256"
+                                    MaxHeight="64"
+                                    Stretch="Uniform"/>
+                                <TextBlock Grid.Column="1" Text="{Binding Name}" VerticalAlignment="Center" Margin="4,0,0,0" />
+                            </Grid>
+                        </DataTemplate>
+                    </local:ComboBoxItemTemplateSelector.ItemTemplate>
+                    <local:ComboBoxItemTemplateSelector.SelectedItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Name}"/>
+                        </DataTemplate>
+                    </local:ComboBoxItemTemplateSelector.SelectedItemTemplate>
+                </local:ComboBoxItemTemplateSelector>
+            </Grid.Resources>
+            
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
+            
             <TextBlock
                 Text="{x:Static local:Strings.DepthMap}"
                 VerticalAlignment="Center" />
             <ComboBox 
                 Grid.Column="1"
                 Margin="4,0,10,0"
-                ItemsSource="{Binding DepthMaps}" 
-                DisplayMemberPath="Name" 
-                SelectedValuePath="Path" 
+                ItemsSource="{Binding DepthMaps}"
+                ItemContainerStyle="{StaticResource ComboBoxItemContainerStyle}"
+                ItemTemplateSelector="{StaticResource ComboBoxItemTemplateSelector}"
                 SelectedValue="{Binding DepthMap, Mode=TwoWay}" />
             <TextBlock
                 Grid.Column="2"
@@ -41,8 +72,8 @@
                 Grid.Column="3"
                 Margin="4,0,0,0"
                 ItemsSource="{Binding Patterns}"
-                DisplayMemberPath="Name"
-                SelectedValuePath="Path"
+                ItemContainerStyle="{StaticResource ComboBoxItemContainerStyle}"
+                ItemTemplateSelector="{StaticResource ComboBoxItemTemplateSelector}"
                 SelectedValue="{Binding Pattern, Mode=TwoWay}" />
         </Grid>
         <Grid Grid.Row="1" Margin="4,0,4,4" >
