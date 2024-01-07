@@ -13,7 +13,7 @@ public class AutostereogramGeneratorTests
         return Image.Load<Rgb24>(image);
     }
 
-    private static void CreateImage(string depthMapPath, string? patternPath, string saveFileName, int width, int height, int dpi = 96,
+    private static void CreateImage(string depthMapPath, string? patternPath, string saveFileName, int width = 0, int height = 0, int dpi = 96,
         int observatorDistance = 24)
     {
         using var depthMap = LoadImage(depthMapPath);
@@ -26,20 +26,20 @@ public class AutostereogramGeneratorTests
     }
 
     [Fact]
-    public void CreateAutostereogram()
+    public static void CreateAutostereogram()
     {
         CreateImage(SHARK, ROCKS, "Autostereogram.png", 1920, 1080);
     }
 
     [Fact]
-    public void CreateAutostereogramForPrinting()
+    public static void CreateAutostereogramForPrinting()
     {
-        CreateImage(SHARK, ROCKS, "AutostereogramPrint.png", 3508, 2480, 300, 16);
+        CreateImage(SHARK, ROCKS, "AutostereogramPrint.png", 1123, 794, 96, 16);
     }
 
     [Fact]
-    public void CreateSIRDS()
+    public static void CreateSIRDS()
     {
-        CreateImage(SHARK, null, "SIRDS.png", 1600, 900);
+        CreateImage(SHARK, null, "SIRDS.png");
     }
 }
